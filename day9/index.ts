@@ -1,7 +1,7 @@
 import fs from "fs";
 
 
-let contents = fs.readFileSync('./day9/test.txt', 'utf8');
+let contents = fs.readFileSync('./day9/input.txt', 'utf8');
 
 //grab each line and value per
 const input = contents.split(/\r?\n/).map(val => val.split(' '));
@@ -23,7 +23,7 @@ const oasis = (history: number[])=> {
         }
         // return arrays rather than just the values
         const lastOasisResult = oasis(nonZero)
-        history.push(lastOasisResult[0]+history[0])
+        history.unshift(history[0]-lastOasisResult[0])
         return history
     }
     // otherwise take the last value and return
@@ -35,7 +35,7 @@ let oasisSum = 0
 input.forEach(history => {
     const numberVals = history.map(val => parseInt(val))
     const oResult = oasis(numberVals)
-        oasisSum += oResult[oResult.length-1]
+        oasisSum += oResult[0]
     // quick checkerFunction
     // 2751 too high
 })
