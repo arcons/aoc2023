@@ -1,7 +1,7 @@
 import fs from "fs";
 
 
-let contents = fs.readFileSync('./day6/input.txt', 'utf8');
+let contents = fs.readFileSync('./day9/test.txt', 'utf8');
 
 //grab each line and value per
 const input = contents.split(/\r?\n/).map(val => val.split(' '));
@@ -13,15 +13,29 @@ const input = contents.split(/\r?\n/).map(val => val.split(' '));
 // sum the ids of the games
 
 // recursion is the easiest way
-const oasis = (history: number[]) => {
-    const historSum= history.reduce((a, b) => a + b, 0)
-    return historSum
+const oasis = (history: number[])=> {
+    const historSum = history.reduce((a, b) => a - b, 0)
+    while(historSum !== 0) {
+        const nonZero = []
+        for(let i=0 ; i < history.length-1; i++){
+            // I think this may be broken
+            nonZero.push(history[i+1] - history[i])
+        }
+        // return arrays rather than just the values
+        const lastOasisResult = oasis(nonZero)
+        history.push(lastOasisResult[0]+history[0])
+        return history
+    }
+    // otherwise take the last value and return
+    // history.push(lastValue)
+    return history
 }
 
 let oasisSum = 0
 input.forEach(history => {
     const numberVals = history.map(val => parseInt(val))
-    oasisSum += oasis(numberVals)
+    const oResult = oasis(numberVals)
+        oasisSum += oResult[oResult.length-1]
     // quick checkerFunction
     // 2751 too high
 })
