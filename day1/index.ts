@@ -7,9 +7,10 @@ let contents = fs.readFileSync('./day1/input.txt', 'utf8');
 const input = contents.split(/\r?\n/);
 const firstAndLast = (gameSets: string) => {
     // match digits whitespace and words
-    const findMatch = gameSets.match(/[0-9]|zero|one|two|three|four|five|six|seven|eight|nine|/g).filter(x => x != '')
+    // bless the blogpost https://mtsknn.fi/blog/how-to-do-overlapping-matches-with-regular-expressions/
+    const findMatch = [...gameSets.matchAll(/(?<=([0-9]|zero|one|two|three|four|five|six|seven|eight|nine))/g)].map(val => val[1])
+    // |zeroone|twoone|eightwo|eighthree|
     // this will contain the digits dits
-
     const dictionary = {
         "zero": '0',
         "one": '1',
@@ -21,6 +22,11 @@ const firstAndLast = (gameSets: string) => {
         "seven": '7',
         "eight": '8',
         "nine": '9',
+        // "zerone": '1',
+        // "twoone": '1',
+        // 'eightwo': '2',
+        // 'eighthree': '3',
+        // 'sevenine': '9',
     }
     const firstValue = dictionary[findMatch[0]] ? dictionary[findMatch[0]] : findMatch[0]
     const secondValue = dictionary[findMatch[findMatch.length-1]] ? dictionary[findMatch[findMatch.length-1]] : findMatch[findMatch.length-1]
@@ -34,5 +40,5 @@ input.forEach(weather =>
 )
 
 
-// wrong 55648
+// wrong 55648 too low
 console.log(sumOfPower)
